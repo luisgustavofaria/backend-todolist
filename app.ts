@@ -24,24 +24,9 @@ app.post('/todo/create', async (req, res) => {
   return res.status(201).json(todo);
 });
 
-app.patch('/todo/color', async (req, res) => {
-  const { id } = req.query as { id: string };
-  const { color } = req.body;
-
-  await prisma.todo.update({
-    where: {
-      id: Number(id),
-    },
-    data: {
-      color: color ?? '',
-    },
-  });
-
-  res.send();
-});
-
 app.put('/todo/update-unique', async (req, res) => {
-  const { todo_id, titleTodoList, textAreaTodoList, isFavorited } = req.body;
+  const { todo_id, titleTodoList, textAreaTodoList, isFavorited, color } =
+    req.body;
   if (!todo_id) {
     return res.status(400).json({
       error: 'Todo ID no exist ',
@@ -71,6 +56,7 @@ app.put('/todo/update-unique', async (req, res) => {
     titleTodoList: validate(titleTodoList, todo.titleTodoList),
     textAreaTodoList: validate(textAreaTodoList, todo.textAreaTodoList),
     isFavorited: validate(isFavorited, todo.isFavorited),
+    color: validate(color, todo.color),
   };
   console.log(todoToUpdateData);
 
