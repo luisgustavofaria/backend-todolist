@@ -8,6 +8,12 @@ app.use(cors());
 
 const prisma = new PrismaClient();
 
+app.get('/todo/list-many', async (req, res) => {
+  const todo = await prisma.todo.findMany();
+
+  return res.status(200).json(todo);
+});
+
 app.post('/todo/create', async (req, res) => {
   const { titleTodoList, textAreaTodoList, isFavorited, color } = req.body;
   console.log(req.body);
@@ -68,12 +74,6 @@ app.put('/todo/update-unique', async (req, res) => {
   });
 
   return res.status(201).json(todoUpdated);
-});
-
-app.get('/todo/list-many', async (req, res) => {
-  const todo = await prisma.todo.findMany();
-
-  return res.status(200).json(todo);
 });
 
 app.get('/todo/list-unique', async (req, res) => {
